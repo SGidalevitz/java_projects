@@ -13,6 +13,7 @@ public class gnomeSort {
                 array1[i] = random.nextInt(1000);
             //}
             gnomeSort(array1);
+            System.out.println(array1);
             }
         }
         

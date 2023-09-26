@@ -1,6 +1,6 @@
 import java.util.Scanner;
 
-public class practice{
+public class tictactoe{
     enum State {
         empty,
         player1,
