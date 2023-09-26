@@ -12,6 +12,7 @@ public class Player{
         username = user;
         storeItems = initStoreItems();
         ArrayList<Object> playerObjects = new ArrayList<Object>();
+        System.out.print();
 
     }
     public int getHealth() {

@@ -17,6 +17,7 @@ public class Enemy{
             String[] verbals = getEnemyAndAttackVerbal(type);
             enemyTypeVerbal = verbals[0];
             enemyAttack = verbals[1];
+            System.out.print();
         }
     public void stateVars() {
         System.out.print("Level " + enemyLevel + " " + enemyTypeVerbal);

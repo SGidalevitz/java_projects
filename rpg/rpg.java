@@ -12,7 +12,7 @@ public class rpg{
         logMinigame();
         doFight(player, new Enemy(0, 1, difficulty));
         doInputCycle(player);
-
+        System.out.print();
     }
 
     public static void displayStore(Player player) {

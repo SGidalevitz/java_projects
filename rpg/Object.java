@@ -8,7 +8,7 @@ public class Object{
         objectName = name;
         objectDurability = durability;
         objectType = type;
-
+        System.out.print();
         
     }
     public void useItem(Player player) {

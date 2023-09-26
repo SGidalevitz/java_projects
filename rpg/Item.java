@@ -18,6 +18,7 @@ public class Item{
         cost = itemCost;
         durabilityUsage = getDurabilityUsage(type);
         itemIndex = index;
+        System.out.print();
     }
     public void stateVars() {
         System.out.print(name);
