@@ -8,15 +8,17 @@ public class rpg{
         String user = getUsername();
         Player player = new Player(difficulty, user);
         doInputCycle(player);
-        System.out.println("You are out in the forest, and you need wood to build shelter for the night and to kindle a fire to cook dinner. It is getting dark soon, so you need to act quickly. ");
+        printDialogue(0);
+        player.getObjects().add(new Object("Wooden Axe", 200, 0, player.getObjects().size()));
         logMinigame();
-        doFight(player, new Enemy(0, 1, difficulty));
+        printDialogue(1);
         doInputCycle(player);
-        System.out.print();
+        doFight(player, new Enemy(1, 4, difficulty));
+        doInputCycle(player);
     }
 
     public static void displayStore(Player player) {
-        System.out.println("------------------------------------------------------------------------------------------------------------");
+        printSeparator();
         System.out.println("You have " + player.getCoins() + " coins.");
         player.stateAllVars(player.getStoreItems());
         Scanner input = new Scanner(System.in);
@@ -69,11 +71,11 @@ public class rpg{
         }
         return difficulty;
     }
-    public static int[] doFight(Player player, Enemy enemy) {
-        System.out.println("------------------------------------------------------------------------------------------------------------");
-        enemy.stateVars();
-        System.out.println("------------------------------------------------------------------------------------------------------------");
+    public static int[] doFight(Player player, Enemy enemy) { 
+        printSeparator();
         System.out.println(player.getUsername() + " (" + player.getHealth() + " HP)" + " is fighting " + enemy.getNameAndLevel() + " (" + enemy.getHealth() + " HP)" + "!");
+        printSeparator();
+        enemy.stateVars();
         boolean fightOver = false;
         while (!fightOver) {
             int itemOfChoice = getItemForUse(player);
@@ -96,7 +98,7 @@ public class rpg{
             System.out.print("The " + enemy.getNameAndLevel() + "'s health is: " + enemy.getHealth() + "\t");
             printEnemyHealthScale(enemy);
             System.out.println();
-            System.out.println("------------------------------------------------------------------------------------------------------------");
+            printSeparator();
         }
         int[] returnvals = {0, 0};
         return returnvals;
@@ -106,7 +108,7 @@ public class rpg{
         System.out.println("These are your items:");
         player.stateAllVars(player.getItems());
         System.out.println("Which item would you like to use? (Choose a number from 1 to " + player.getItems().size() + ")");
-        System.out.println("------------------------------------------------------------------------------------------------------------");
+        printSeparator();
         int itemOfUse = input.nextInt();
         while (itemOfUse < 1 || itemOfUse > player.getItems().size()) {
             System.out.println("That is not a valid option. Which item would you like to use? (Choose a number from 1 to " + player.getItems().size() + ")");
@@ -120,34 +122,49 @@ public class rpg{
         return input.nextLine();
     }
     public static void userAttack(Player player, Enemy enemy, int itemOfChoice) {
+        String nameOfItem = player.getItems().get(itemOfChoice).getName();
         int userDamage = player.getItems().get(itemOfChoice).useItem(player);
-        System.out.println(player.getUsername() + " uses " + player.getItems().get(itemOfChoice).getName() + " for " + userDamage + " damage!");
+        String username = player.getUsername();
+        System.out.println(username + " uses " + nameOfItem + " for " + userDamage + " damage!");
         enemy.changeHealth(-1 * userDamage);
         
     }
     public static void enemyAttack(Player player, Enemy enemy) {
-        System.out.println(enemy.getNameAndLevel() + " uses " + enemy.getEnemyAttack() + " for " + enemy.getEnemyAttackDamage() + " damage!");
+        String enemyNameAndLevel = enemy.getNameAndLevel();
+        String enemyAttack = enemy.getEnemyAttack();
+        int enemyAttackDamage = enemy.getEnemyAttackDamage();
+        System.out.println(enemyNameAndLevel + " uses " + enemyAttack + " for " + enemyAttackDamage + " damage!");
         player.changeHealth(-1 * enemy.getEnemyAttackDamage());
     }
     public static void doGameOverSequence() {
+        printSeparator();
         System.out.println("It was a great run, but your battle is over! Thanks for playing!");
+        printSeparator();
         System.exit(0);
     }
     public static void doInputCycle(Player player) {
+        printSeparator();
+        System.out.println("You may enter \"s\" to open the shop, \"c\" to continue, or \"i\" to view your items.");
         Scanner input = new Scanner(System.in);
         String data = "";
         data = input.nextLine();
+        
         while (!data.equals("c")) {
             while (!data.equals("c") && !data.equals("s") && !data.equals("i")) {
+                printSeparator();
                 System.out.println("Invalid choice. Remember: you may enter \"s\" to open the shop, \"c\" to continue, or \"i\" to view your items.");
                 data = input.nextLine();
             }
             if (data.equals("s")) {
                 displayStore(player);
+                printSeparator();
+                System.out.println("You may enter \"s\" to open the shop, \"c\" to continue, or \"i\" to view your items.");
                 data = input.nextLine();
             }
             else if (data.equals("i")) {
                 player.stateAllVars(player.getItems());
+                printSeparator();
+                System.out.println("You may enter \"s\" to open the shop, \"c\" to continue, or \"i\" to view your items.");
                 data = input.nextLine();
             }
             else if (data.equals("c")) {
@@ -178,14 +195,25 @@ public class rpg{
         Scanner input = new Scanner(System.in);
         int total = 0;
         boolean isEmpty = false;
-        int[][] logs = new int[5][5];
-        for (int i = 0; i < logs.length; i++) {
-            for (int j = 0; j < logs[0].length; j++) {
-                logs[i][j] = Math.abs(rand.nextInt() % 2);
-                if (logs[i][j] == 1) {
-                    total++;
+        int[][] logs = {{0, 0, 0, 0, 0}, {0, 0, 0, 0, 0}, {0, 0, 0, 0, 0}, {0, 0, 0, 0, 0}, {0, 0, 0, 0, 0}};
+        
+        ArrayList<Integer> logPlacements = new ArrayList<Integer>();
+        while (logPlacements.size() != 5) {
+            int randInt = rand.nextInt(0, 25);
+            boolean inList = false;
+            for (int i = 0; i < logPlacements.size(); i++) {
+                if (randInt == logPlacements.get(i)) {
+                    inList = true;
+                    break;
                 }
             }
+            if (!inList) {
+                logPlacements.add(randInt);
+            }
+        }
+        for (int i = 0; i < logPlacements.size(); i++) {
+            int logIndex = logPlacements.get(i);
+            logs[logIndex % 5][logIndex / 5] = 1;
         }
         for (int i = 0; i < logs.length; i++) {
             for (int j = 0; j < logs[0].length; j++) {
@@ -196,9 +224,15 @@ public class rpg{
         while (!isEmpty) {
             System.out.println("Enter a coordinate x,y to collect the wood");
             String data = input.nextLine();
+            if (data.equals("s")) {
+                break;
+            }
             while (data.length() != 3 || Integer.parseInt(data.substring(0, 1)) < 1 || Integer.parseInt(data.substring(0, 1)) > 5 || Integer.parseInt(data.substring(2)) < 1 || Integer.parseInt(data.substring(2)) > 5) {
                 System.out.println("Invalid coordinate. Try again x,y");
                 data = input.nextLine();
+                if (data.equals("s")) {
+                break;
+                }
             }
             int row = 5 - Integer.parseInt(data.substring(2));
             int col = Integer.parseInt(data.substring(0, 1)) - 1;
@@ -216,9 +250,24 @@ public class rpg{
                 System.out.println();
             }
         }
-        System.out.println("You did it!");
         
         
     
-        }
     }
+    public static void printSeparator() {
+        System.out.println("------------------------------------------------------------------------------------------------------------");
+    }
+    public static void printDialogue(int section) {
+        printSeparator();
+        if (section == 0) {
+            System.out.println("You are out in the forest, and you need wood to build shelter for the night and to kindle a fire to cook dinner. It is getting dark soon, so you need to act quickly. ");
+            System.out.println("To help, I have given you an axe that will help you chop down logs.");
+        }
+        else if (section == 1) {
+            System.out.println("Great work collecting the wood. You bring it back to your base, and begin building a shelter, but a dark figure bats your eye. You try to look at it better, but it starts charging towards you.");
+        }
+
+        
+    }
+    
+}

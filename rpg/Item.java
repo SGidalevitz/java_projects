@@ -18,7 +18,6 @@ public class Item{
         cost = itemCost;
         durabilityUsage = getDurabilityUsage(type);
         itemIndex = index;
-        System.out.print();
     }
     public void stateVars() {
         System.out.print(name);
@@ -74,7 +73,9 @@ public class Item{
         return damage;
     }
     public void itemBroke(Player player) {
+        System.out.println("------------------------------------------------------------------------------------------------------------");
         System.out.println(name + " broke!");
+        System.out.println("------------------------------------------------------------------------------------------------------------");
         player.rearrangeItemIndices(itemIndex);
     }
     public int getCost() {
