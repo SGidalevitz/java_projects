@@ -11,7 +11,7 @@ public class Player{
         playerItems = openingSequence(difficulty);
         username = user;
         storeItems = initStoreItems();
-        ArrayList<Object> playerObjects = new ArrayList<Object>();
+        playerObjects = new ArrayList<Object>();
 
     }
     public int getHealth() {
@@ -26,11 +26,23 @@ public class Player{
     public ArrayList<Object> getObjects() {
         return playerObjects;
     }
+    public ArrayList<Object> getUsableObjects(Player player) {
+        ArrayList<Object> usableObjects = new ArrayList<Object>();
+        for (int i = 0; i < player.getObjects().size(); i++) {
+            if (player.getObjects().get(i).getUsability()) {
+                usableObjects.add(player.getObjects().get(i));
+            }
+        }
+        return usableObjects;
+    }
     public int getCoins() {
         return playerCoins;
     }
     public void changeCoins(int value) {
         playerCoins += value;
+    }
+    public void addStartingAxe() {
+        playerObjects.add(new Object("Wooden Axe", 200, 0, 0, 0));
     }
     public ArrayList<Item> initStoreItems() {
         ArrayList<Item> storeItems = new ArrayList<Item>();
@@ -79,18 +91,47 @@ public class Player{
             difficultyVerbal = "Hard";
             playerCoins = 300;
         }
-        System.out.println("Last thing: I have given you " + playerCoins + " coins to start the game. At any point in which you are not in a fight, you may enter \"s\" to open the shop, \"c\" to continue, or \"i\" to view your items.");
+        System.out.println("Last thing: I have given you " + playerCoins + " coins to start the game. At any point in which you are not in a fight, you may enter \"s\" to open the shop, \"c\" to continue, \"u\" to use your items, or \"i\" to view your items.");
         System.out.println("All set! You are playing on " + difficultyVerbal + " difficulty. Have fun!");
         return getStarterItems(difficulty);
     }
     public String getUsername() {
         return username;
     }
-    public void stateAllVars(ArrayList<Item> items) {
-        System.out.println("------------------------------------------------------------------------------------------------------------");
+    public void showItems(ArrayList<Item> items, boolean printHealth) {
+        printSeparator();
+        if (printHealth) {
+            System.out.println("Player Health: " + playerHealth);
+        }
         for (int i = 0; i < items.size(); i++) {
             System.out.print("Item " + (i + 1) + ": ");
             items.get(i).stateVars();
+        }
+        
+    }
+    public void showItemsAndObjects(ArrayList<Item> items, ArrayList<Object> objects, boolean printHealth) {
+        printSeparator();
+        if (printHealth) {
+            System.out.println("Player Health: " + playerHealth);
+        }
+        
+        for (int i = 0; i < items.size(); i++) {
+            System.out.print("Item " + (i + 1) + ": ");
+            items.get(i).stateVars();
+        }
+        for (int i = 0; i < objects.size(); i++) {
+            System.out.print("Item " + (items.size() + i + 1) + ": ");
+            objects.get(i).stateVars();
+        }
+    }
+    public void showObjects(ArrayList<Object> objects, boolean printHealth) {
+        printSeparator();
+        if (printHealth) {
+            System.out.println("Player Health: " + playerHealth);
+        }
+        for (int i = 0; i < objects.size(); i++) {
+            System.out.print("Item " + (i + 1) + ": ");
+            objects.get(i).stateVars();
         }
     }
     public void rearrangeItemIndices(int index) {
@@ -104,5 +145,8 @@ public class Player{
         for (int i = 0; i < playerObjects.size(); i++) {
             playerObjects.get(i).setIndex(i);
         }
+    }
+    public void printSeparator() {
+        System.out.println("------------------------------------------------------------------------------------------------------------");
     }
 }

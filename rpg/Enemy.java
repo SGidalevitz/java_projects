@@ -69,6 +69,9 @@ public class Enemy{
             return verbals;
         }
     }
+    public void printSeparator() {
+        System.out.println("------------------------------------------------------------------------------------------------------------");
+    }
 }
 
 
