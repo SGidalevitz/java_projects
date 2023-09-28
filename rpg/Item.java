@@ -73,9 +73,9 @@ public class Item{
         return damage;
     }
     public void itemBroke(Player player) {
-        System.out.println("------------------------------------------------------------------------------------------------------------");
+        printSeparator();
         System.out.println(name + " broke!");
-        System.out.println("------------------------------------------------------------------------------------------------------------");
+        printSeparator();
         player.rearrangeItemIndices(itemIndex);
     }
     public int getCost() {
@@ -96,7 +96,11 @@ public class Item{
     public void setIndex(int i) {
         itemIndex = i;
     }
+    public void printSeparator() {
+        System.out.println("------------------------------------------------------------------------------------------------------------");
+    }
 }
+
 //item types
 //sword: 0
 //bow: 1
