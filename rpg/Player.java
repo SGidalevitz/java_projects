@@ -66,7 +66,7 @@ public class Player{
         }
         else if (difficulty == 2) {
             ArrayList<Item> items = new ArrayList<Item>();
-            items.add(new Item("Basic Sword", 250, 0, 0, 0, 0));
+            items.add(new Item("Basic Sword", 250, 120, 0, 0, 0));
             items.add(new Item("Basic Bow", 175, 125, 1, 0, 1));
             return items;
         }
@@ -133,6 +133,7 @@ public class Player{
             System.out.print("Item " + (i + 1) + ": ");
             objects.get(i).stateVars();
         }
+        
     }
     public void rearrangeItemIndices(int index) {
         playerItems.remove(index);
@@ -149,4 +150,13 @@ public class Player{
     public void printSeparator() {
         System.out.println("------------------------------------------------------------------------------------------------------------");
     }
+
+    //toString method using showItems or showItemsAndObjects or showObjects methods for printing out items and objects
+    @Override
+    public String toString() {
+        //use the methods already given
+        //
+        return "Player: " + username + " Health: " + playerHealth + " Coins: " + playerCoins;
+    }
+
 }

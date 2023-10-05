@@ -71,7 +71,6 @@ public class Object{
     public void itemBroke(Player player) {
         printSeparator();
         System.out.println(objectName + " broke!");
-        printSeparator();
         player.rearrangeObjectIndices(objectIndex);
     }
     public void printDurability() {

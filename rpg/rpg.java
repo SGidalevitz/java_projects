@@ -20,6 +20,7 @@ public class rpg{
         doInputCycle(player);
         player.getObjects().add(new Object("Healing Potion", 100, 1, 0, 1));
         doInputCycle(player);
+        
     }
 
     public static void displayStore(Player player) {
@@ -163,7 +164,7 @@ public class rpg{
                 printSeparator();
                 System.out.println("Invalid choice. You may enter \"s\" to open the shop, \"c\" to continue, ");
                 if (player.getUsableObjects(player).size() != 0) {
-                    System.out.print("\"u\" to use your items");
+                    System.out.print("\"u\" to use your items, ");
                 }
                 System.out.println("or \"i\" to view your items.");
                 data = input.nextLine();
@@ -177,7 +178,6 @@ public class rpg{
             }
             else if (data.equals("u")) {
                 if (player.getUsableObjects(player).size() != 0) {
-                    printSeparator();
                     itemUseProcess(player); 
                 }
                 else {
@@ -197,10 +197,11 @@ public class rpg{
     public static void itemUseProcess(Player player) {
         Scanner input = new Scanner(System.in);
         player.showObjects(player.getUsableObjects(player), true);
-        System.out.println("Pick a number from 1 to " + player.getUsableObjects(player).size() + "To choose which item you will use");
+        printSeparator();
+        System.out.println("Pick a number from 1 to " + player.getUsableObjects(player).size() + " to choose which item you will use");
         int choice = input.nextInt();
         while (choice < 1 || choice > player.getUsableObjects(player).size()) {
-            System.out.println("That's not a valid choice. Pick a number from 1 to " + player.getUsableObjects(player).size() + "To choose which item you will use");
+            System.out.println("That's not a valid choice. Pick a number from 1 to " + player.getUsableObjects(player).size() + " to choose which item you will use");
             choice = input.nextInt();
         }
         player.getUsableObjects(player).get(choice - 1).useObject(player);
