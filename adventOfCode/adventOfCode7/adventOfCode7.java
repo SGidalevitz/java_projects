@@ -3,17 +3,15 @@ import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.io.File;
 public class AdventOfCode7{
+
     public static void main(String[] args) throws FileNotFoundException {
-        File dataFile = new File("AOCinput7.txt");
+        File dataFile = new File("AOCInput7.txt");
         Scanner input = new Scanner(dataFile);
         Directory startingDir = new Directory();
         ArrayList<Directory> dirPath = new ArrayList<Directory>();
-        ArrayList<Directory> dirsInList = new ArrayList<Directory>();
         String data;
-        ArrayList<String> dirNames = new ArrayList<String>();
         input.nextLine();
         dirPath.add(startingDir);
-        int count = 1;
         while(input.hasNextLine()) {
             data = input.nextLine();
             if (classifyCommand(data) == 0) { // $ cd ..
@@ -35,15 +33,26 @@ public class AdventOfCode7{
             }
             else if (classifyCommand(data) == 3) {// dir dirname
                 Directory latestInPath = dirPath.get(dirPath.size() - 1);
-                latestInPath.addChildDirectory(new Directory(latestInPath, getDirName(data)));
-
+                int ind = Directory.allDirSizes.size();
+                latestInPath.addChildDirectory(new Directory(latestInPath, getDirName(data), ind));
             }
             else if (classifyCommand(data) == 4) {// filename
                 int fileSize = getFileSize(data);
                 dirPath.get(dirPath.size() - 1).addFile(fileSize);
             }
         }
-        ArrayList<Integer> allDirSizes = search(startingDir, new ArrayList<Integer>());
+        int sum = 0;
+        int totalSpaceUsed = Directory.allDirSizes.get(0);
+        int unusedSpaceNecessary = 40000000;
+        int spaceNecessaryForDeletion = totalSpaceUsed - unusedSpaceNecessary;
+        int min = totalSpaceUsed;
+        for (int i = 1; i < Directory.allDirSizes.size(); i++) {
+            if (Directory.allDirSizes.get(i) < min && Directory.allDirSizes.get(i) >= spaceNecessaryForDeletion) {
+                min = Directory.allDirSizes.get(i);
+            }
+        }
+        System.out.println(min);
+        
     }
     public static int classifyCommand(String data) {
         if (data.charAt(0) == '$') {
@@ -75,28 +84,5 @@ public class AdventOfCode7{
     }
     public static int getIndexOfDir(ArrayList<String> dirNames, String dirName) {
         return dirNames.indexOf(dirName);
-    }
-    public static ArrayList<Integer> search(Directory dir, ArrayList<Integer> allDirs) { 
-        System.out.print("searching ");
-        if (dir.getChildDirs().size() > 0) {
-            for (int i = 0; i < dir.getChildDirs().size(); i++) {
-                allDirs = combine(allDirs, search(dir.getChildDirs().get(i), allDirs));
-            }
-            allDirs.add(dir.getDirSize());
-            return allDirs;
-        }
-        return new ArrayList<Integer>();
-        
-    }
-    public static ArrayList<Integer> combine(ArrayList<Integer> a, ArrayList<Integer> b) {
-        for (int i = 0; i < b.size(); i++) {
-            a.add(b.get(i));
-        }
-        return a;
-    }
-    public static void printArray(ArrayList<String> array) {
-        for (int i = 0; i < array.size(); i++) {
-            System.out.println(array.get(i));
-        }
     }
 }
