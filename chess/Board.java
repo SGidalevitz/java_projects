@@ -88,5 +88,36 @@ public class Board {
         board[destination.getFile()][destination.getRank()].setType(board[origin.getFile()][origin.getRank()].getType());
         board[origin.getFile()][origin.getRank()].setType(0);
     }
-    
+    public ArrayList<Move> getValidMoves() {
+        
+    }
+    public ArrayList<Move> getPawnMoves(ArrayList<Piece> pieces) {
+        ArrayList<Move> pawnMoves = new ArrayList<Moves>();
+        for (int pieceIndex = 0; pieceIndex < pieces.size(); p++) {
+            Piece piece = pieces.get(pieceIndex);
+            pieceRank = piece.getRank();
+            pieceFile = piece.getFile();
+            pieceColor = (piece.getType <= 6) ? 0 : 1;
+            if (pieceColor = 0) {
+                Move singlePawnPush = new Move(new Square(pieceRank, pieceFile), new Square(pieceRank + 1, pieceFile));
+                if (singlePawnPush.isValid(board)) {
+                    pawnMoves += singlePawnPush;
+                }
+                Move doublePawnPush = new Move(new Square(pieceRank, pieceFile), new Square(pieceRank + 2, pieceFile));
+                if (doublePawnPush.isValid(board)) {
+                    pawnMoves += doublePawnPush;
+                }
+            }
+            else {
+                Move singlePawnPush = new Move(new Square(pieceRank, pieceFile), new Square(pieceRank - 1, pieceFile));
+                if (singlePawnPush.isValid(board)) {
+                    pawnMoves += singlePawnPush;
+                }
+                Move doublePawnPush = new Move(new Square(pieceRank, pieceFile), new Square(pieceRank - 2, pieceFile));
+                if (doublePawnPush.isValid(board)) {
+                    pawnMoves += doublePawnPush;
+                }
+            }
+                
+    }
 }
