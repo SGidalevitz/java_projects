@@ -2,12 +2,12 @@ import java.util.HashMap;
 public class Piece {
     private Square pos;
     private int type; // empty = 0, white (pawn, knight, bishop, rook, queen, king) = 1-6, black (pawn, knight, bishop, rook, queen, king) = 7-12
-
-    public Piece(Square pos, int type) {
+    private Board parentBoard;
+    public Piece(Square pos, int type, Board board) {
+        this.parentBoard = board;
         this.pos = pos;
         this.type = type;
     }
-
     public int getRank() {
         return pos.getRank();
     }
@@ -17,6 +17,10 @@ public class Piece {
     public int getType() {
         return type;
     }
+    public int getParentBoard() {
+        return parentBoard;
+    }
+    
     public char getPieceAsChar() {
         return getPieceIDToCharMap().get(type);
     }
